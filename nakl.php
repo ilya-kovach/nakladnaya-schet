@@ -282,23 +282,22 @@ function generate_nakl_torg12()
 	$pdf->MultiCell(24, 8, 'Сумма с учетом НДС',1,'C',false,2,261,82);
 	$pdf->MultiCell(24, 4, '15',1,'C',false,2,261,90);
 	
-	
-	$data = $_POST;
-	$kolli4estvo_strok = $data['kolli4estvo_strok'];
-	$mass = array();
-	massiv();
+
+	$data = $_POST['kolli4estvo_strok'];
+	$mass[] = "";
 	function massiv() {
 	for ($d = 1; $d <= $kolli4estvo_strok; $d++)
 		{
-			array_push($mass, $data[$d."-1"] = $_POST['tovar-'.$d]);
-			array_push($mass, $data[$d."-2"] = $_POST['naimenovanie-'.$d]);
-			array_push($mass, $data[$d."-3"] = $_POST['kod-'.$d]);
-			array_push($mass, $data[$d."-4"] = $_POST['kolli4estvo-'.$d]);
-			array_push($mass, $data[$d."-5"] = $_POST['cena-'.$d]);
-			array_push($mass, $data[$d."-6"] = $_POST['bez_NDS-'.$d]);
-			array_push($mass, $data[$d."-7"] = $_POST['s_NDS-'.$d]);
+			$mass[$d.'-1'] = $_POST['tovar-'.$d];
+			$mass[$d.'-2'] = $_POST['naimenovanie-'.$d];
+			$mass[$d.'-3'] = $_POST['kod-'.$d];
+			$mass[$d.'-4'] = $_POST['kolli4estvo-'.$d];
+			$mass[$d.'-5'] = $_POST['cena-'.$d];
+			$mass[$d.'-6'] = $_POST['bez_NDS-'.$d];
+			$mass[$d.'-7'] = $_POST['s_NDS-'.$d];
 		}
 	}
+	massiv();
 	
 	/*
 	$record = array(
@@ -334,7 +333,7 @@ function generate_nakl_torg12()
 	
 	$y1 = 94;
 	$y2 = $y1;
-	for ($d = 1; $d <= $kolli4estvo_strok; $d++)
+	for ($d = 1; $d <= $_POST['kolli4estvo_strok']; $d++)
 	{
 		$txt = $d."-1";
 		$pdf->MultiCell(84,0,$mass[$txt],1,'L',false,2,17,$y2);
