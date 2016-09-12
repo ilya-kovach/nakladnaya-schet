@@ -104,27 +104,35 @@ function generate_nakl_torg12()
 	$pdf->SetFont('freesans','',8);
 	//Название фирмы
 	$pdf->SetXY(9,9);
-	$pdf->MultiCell(230, 0, 'ООО "РОГА И КОПЫТА", ИНН 6166611430, КПП 666604401, Переулок 25й Новый,10, г.Мосва,Московская обл., 342407, банк: Филиал "Южный" ОАО "Уралсиб"в г.Москве, БИК 042058240,р/с:407028234524310000027,к/с: 3010181044958730700', 0, 'L');
+	$pdf->MultiCell(230, 0, $_POST['comment1'], 0, 'L');
 	//Грузополучатель
 	$pdf->SetXY(35,22.5);
-	$pdf->MultiCell(215, 0, 'ООО "КОПЫТА И РОГА ДИЗАЙН",банк:ОТДЕЛЕНИЕ N867 СБЕРБАНКА РОССИИ, Архангельск, БИК: 04113341,р/с: 407025354404000008650, к/c: 301333994440000601', 0, 'L');
+	$pdf->MultiCell(215, 0, $_POST['comment2'], 0, 'L');
 	//Поставщик
 	$pdf->SetXY(35,35.5);
-	$pdf->MultiCell(215, 0, 'ООО "РОГА И КОПЫТА", Переулок 25й Новый,10, г.Мосва,Московская обл., 342407, банк: Филиал "Южный" ОАО "Уралсиб"в г.Москве, БИК 042058240,р/с:407028234524310000027,к/с: 3010181044958730700', 0, 'L');
+	$pdf->MultiCell(215, 0, $_POST['comment3'], 0, 'L');
 	//Плательщик
 	$pdf->SetXY(35,48.5);
-	$pdf->MultiCell(215, 0, 'ООО "ООО "КОПЫТА И РОГА ДИЗАЙН",банк:ОТДЕЛЕНИЕ N867 СБЕРБАНКА РОССИИ, Архангельск, БИК: 04113341,р/с: 407025354404000008650, к/c: 301333994440000601', 0, 'L');
+	$pdf->MultiCell(215, 0, $_POST['comment4'], 0, 'L');
 	//Дата создания ? возможно нужно перенести в другое место
 	$pdf->SetFont('freesans', 'b', 10 );
 	$pdf->SetXY(161,74);
-	$pdf->Cell(22, 0, '12.06.2005',0,0,'C');
+	$pdf->Cell(22, 0, $_POST['data_sozdaniya'],0,0,'C');
+	//Номер документа
+	$pdf->SetFont('freesans', 'b', 10 );
+	$pdf->SetXY(119,74);
+	$pdf->Cell(22, 0, $_POST['nomer_dokгmenta'],0,0,'C');
 	//ОКПО1
 	$pdf->SetFont('freesans','',8);
 	$pdf->SetXY(267,13.5);
-	$pdf->Cell(1, 0, '80433393',0,0,'L');
+	$pdf->Cell(1, 0, $_POST['OKPO'],0,0,'L');
 	//ОКПО2
 	$pdf->SetXY(267,36);
-	$pdf->Cell(1, 0, '80433393',0,0,'L');
+	$pdf->Cell(1, 0, $_POST['OKPO'],0,0,'L');
+	//Форма по ОКУД
+	$pdf->SetFont('freesans', 'b', 8 );
+	$pdf->SetXY(268,9.5);
+	$pdf->Cell(1, 0, $_POST['OKUD'],0,0,'L');
 	
 	
 	$pdf->SetFont('freesans','',8);
@@ -166,13 +174,6 @@ function generate_nakl_torg12()
 	$pdf->Cell(34, 0, 'Вид операции',0,0,'R');
 	$pdf->SetXY(210,63.5);
 	$pdf->Cell(1, 0, 'Транспортная накладная',0,0,'L');
-	$pdf->SetFont('freesans', 'b', 8 );
-	$pdf->SetXY(268,9.5);
-	$pdf->Cell(1, 0, '0335512',0,0,'L');
-	
-	$pdf->SetFont('freesans', 'b', 10 );
-	$pdf->SetXY(119,74);
-	$pdf->Cell(22, 0, '0655',0,0,'C');
 	
 	$pdf->SetFont('freesans', 'b', 15 );
 	$pdf->SetXY(28,73);
@@ -280,7 +281,26 @@ function generate_nakl_torg12()
 	$pdf->MultiCell(20, 4, '14',1,'C',false,2,241,90);
 	$pdf->MultiCell(24, 8, 'Сумма с учетом НДС',1,'C',false,2,261,82);
 	$pdf->MultiCell(24, 4, '15',1,'C',false,2,261,90);
-
+	
+	
+	$data = $_POST;
+	$kolli4estvo_strok = $data['kolli4estvo_strok'];
+	$mass = array();
+	massiv();
+	function massiv() {
+	for ($d = 1; $d <= $kolli4estvo_strok; $d++)
+		{
+			array_push($mass, $data[$d."-1"] = $_POST['tovar-'.$d]);
+			array_push($mass, $data[$d."-2"] = $_POST['naimenovanie-'.$d]);
+			array_push($mass, $data[$d."-3"] = $_POST['kod-'.$d]);
+			array_push($mass, $data[$d."-4"] = $_POST['kolli4estvo-'.$d]);
+			array_push($mass, $data[$d."-5"] = $_POST['cena-'.$d]);
+			array_push($mass, $data[$d."-6"] = $_POST['bez_NDS-'.$d]);
+			array_push($mass, $data[$d."-7"] = $_POST['s_NDS-'.$d]);
+		}
+	}
+	
+	/*
 	$record = array(
 		"1-2" => 'Системный блок ПК Intel COre i5',
 		"1-4" => 'шт.',
@@ -310,14 +330,14 @@ function generate_nakl_torg12()
 		"3-14" => '0.00',
 		"3-15" => '170000',
 	);
+	*/
 	
-	$n=3;
 	$y1 = 94;
 	$y2 = $y1;
-	for ($d = 1; $d <= $n; $d++)
+	for ($d = 1; $d <= $kolli4estvo_strok; $d++)
 	{
-		$txt = $d."-2";
-		$pdf->MultiCell(84,0,$record[$txt],1,'L',false,2,17,$y2);
+		$txt = $d."-1";
+		$pdf->MultiCell(84,0,$mass[$txt],1,'L',false,2,17,$y2);
 		$y1 = $y2;	
 		$y2 = $pdf->GetY();
 		$h=$y2-$y1;
@@ -326,11 +346,11 @@ function generate_nakl_torg12()
 		$pdf->SetXY(101,$y1);
 		$pdf->Cell(9, $h, '',1,2,'C');
 		$pdf->SetXY(110,$y1);
-		$txt = $d."-4";
-		$pdf->Cell(8, $h, $record[$txt],1,2,'C');
+		$txt = $d."-2";
+		$pdf->Cell(8, $h, $mass[$txt],1,2,'C');
 		$pdf->SetXY(118,$y1);
-		$txt = $d."-5";
-		$pdf->Cell(8, $h, $record[$txt],1,2,'C');
+		$txt = $d."-3";
+		$pdf->Cell(8, $h, $mass[$txt],1,2,'C');
 		$pdf->SetXY(126,$y1);
 		$pdf->Cell(8, $h, '',1,2,'C');
 		$pdf->SetXY(134,$y1);
@@ -340,23 +360,23 @@ function generate_nakl_torg12()
 		$pdf->SetXY(153,$y1);
 		$pdf->Cell(20, $h, '',1,2,'C');
 		$pdf->SetXY(173,$y1);
-		$txt = $d."-10";
-		$pdf->Cell(22, $h, $record[$txt],1,2,'R');
+		$txt = $d."-4";
+		$pdf->Cell(22, $h, $mass[$txt],1,2,'R');
 		$pdf->SetXY(195,$y1);
-		$txt = $d."-11";
-		$pdf->Cell(20, $h, $record[$txt],1,2,'R');
+		$txt = $d."-5";
+		$pdf->Cell(20, $h, $mass[$txt],1,2,'R');
 		$pdf->SetXY(215,$y1);
-		$txt = $d."-12";
-		$pdf->Cell(20, $h, $record[$txt],1,2,'R');
+		$txt = $d."-6";
+		$pdf->Cell(20, $h, $mass[$txt],1,2,'R');
 		$pdf->SetXY(235,$y1);
-		$txt = $d."-13";
-		$pdf->Cell(6, $h, $record[$txt],1,2,'R');
+		$txt = "---";
+		$pdf->Cell(6, $h, $mass[$txt],1,2,'R');
 		$pdf->SetXY(241,$y1);
-		$txt = $d."-14";
-		$pdf->Cell(20, $h, $record[$txt],1,2,'R');
+		$txt = "0.00";
+		$pdf->Cell(20, $h, $mass[$txt],1,2,'R');
 		$pdf->SetXY(261,$y1);
-		$txt = $d."-15";
-		$pdf->Cell(24, $h, $record[$txt],1,2,'R');
+		$txt = $d."-7";
+		$pdf->Cell(24, $h, $mass[$txt],1,2,'R');
 		if ($y2 > 195) {
 			$pdf->AddPage();
 			$y1 = 8;
@@ -370,8 +390,8 @@ function generate_nakl_torg12()
 	}
 	$sum = 0;
 	for($i = 0; $i <= $n; ++$i) {
-		$txt = $i."-10";
-		$sum =$sum + $record[$txt];
+		$txt = $i."-4";
+		$sum =$sum + $mass[$txt];
 	}
 	$pdf->SetXY(173,$y2);
 	$pdf->Cell(22, 5, $sum,1,2,'R');
@@ -380,27 +400,23 @@ function generate_nakl_torg12()
 	$pdf->SetXY(215,$y2);
 	$sum = 0;
 	for($i = 0; $i <= $n; ++$i) {
-		$txt = $i."-12";
-		$sum =$sum + $record[$txt];
+		$txt = $i."-6";
+		$sum =$sum + $mass[$txt];
 	}
 	$pdf->Cell(20, 5, $sum,1,2,'R');
 	$pdf->SetXY(235,$y2);
 	$pdf->Cell(6, 5,'X',1,2,'C');
 	$pdf->SetXY(241,$y2);
-	$sum = 0;
-	for($i = 0; $i <= $n; ++$i) {
-		$txt = $i."-14";
-		$sum =$sum + $record[$txt];
-	}
-	$pdf->Cell(20, 5, $sum,1,2,'R');
+	
+	$pdf->Cell(20, 5, "0",1,2,'R');
 	$pdf->SetXY(115,$y2+1);
 	$pdf->SetFont('freesans', 'b', 10 );
 	$pdf->MultiCell(80, 0, 'Всего по накладной', 0, 'L');
 	$pdf->SetXY(261,$y2);
 	$sum = 0;
 	for($i = 0; $i <= $n; ++$i) {
-		$txt = $i."-15";
-		$sum =$sum + $record[$txt];
+		$txt = $i."-7";
+		$sum =$sum + $mass[$txt];
 	}
 	$pdf->Cell(24,5, $sum,1,2,'R');
 	$y2 = $pdf->GetY();
@@ -469,11 +485,11 @@ function generate_nakl_torg12()
 	$pdf->MultiCell(200, 1, 'расшифровка подписи',0,'L',false,2,254,$y2+26.5);
 	$pdf->MultiCell(200, 1, 'расшифровка подписи',0,'L',false,2,254,$y2+35.5);
 	$pdf->SetFont('freesans', 'b', 8 );
-	$pdf->MultiCell(200, 1, 'Ген. директор',0,'L',false,2,35,$y2+18);
-	$pdf->MultiCell(43, 1, 'Иванов И.И',0,'R',false,2,103,$y2+18);
-	$pdf->MultiCell(43, 1, 'Иванова И.И.',0,'R',false,2,103,$y2+24.5);
-	$pdf->MultiCell(43, 1, '---',0,'R',false,2,103,$y2+31);
-	$pdf->MultiCell(200, 1, 'Кладовщик',0,'L',false,2,35,$y2+31.5);
+	$pdf->MultiCell(200, 1, $_POST['otpusk_razreshil'],0,'L',false,2,35,$y2+18);
+	$pdf->MultiCell(43, 1, $_POST['name1'],0,'R',false,2,103,$y2+18);
+	$pdf->MultiCell(43, 1, $_POST['name2'],0,'R',false,2,103,$y2+24.5);
+	$pdf->MultiCell(43, 1, $_POST['name3'],0,'R',false,2,103,$y2+31);
+	$pdf->MultiCell(200, 1, $_POST['otpusk_proisvel'],0,'L',false,2,35,$y2+31.5);
 	$pdf->MultiCell(200, 1, 'Главный (старший) бугалтер',0,'L',false,2,9,$y2+25.5);
 	$pdf->MultiCell(200, 1, 'М.П.',0,'L',false,2,18,$y2+39);
 	$pdf->MultiCell(200, 1, 'М.П.',0,'L',false,2,158,$y2+39);
