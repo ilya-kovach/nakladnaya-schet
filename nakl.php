@@ -281,23 +281,40 @@ function generate_nakl_torg12()
 	$pdf->MultiCell(20, 4, '14',1,'C',false,2,241,90);
 	$pdf->MultiCell(24, 8, 'Сумма с учетом НДС',1,'C',false,2,261,82);
 	$pdf->MultiCell(24, 4, '15',1,'C',false,2,261,90);
-	
+
 
 	$data = $_POST['kolli4estvo_strok'];
 	$mass[] = "";
-	function massiv() {
-	for ($d = 1; $d <= $kolli4estvo_strok; $d++)
+	
+	function massiv($data) {
+	$mass[] = "";
+	for ($d = 1; $d <= $data; $d++)
 		{
-			$mass[$d.'-1'] = $_POST['tovar-'.$d];
-			$mass[$d.'-2'] = $_POST['naimenovanie-'.$d];
-			$mass[$d.'-3'] = $_POST['kod-'.$d];
-			$mass[$d.'-4'] = $_POST['kolli4estvo-'.$d];
-			$mass[$d.'-5'] = $_POST['cena-'.$d];
-			$mass[$d.'-6'] = $_POST['bez_NDS-'.$d];
-			$mass[$d.'-7'] = $_POST['s_NDS-'.$d];
+			$txt = 'tovar-'.$d;
+			$numm = $d.'-1';
+			$mass[$numm] = $_POST[$txt];
+			$txt = 'naimenovanie-'.$d;
+			$numm = $d.'-2';
+			$mass[$numm] = $_POST[$txt];
+			$txt = 'kod-'.$d;
+			$numm = $d.'-3';
+			$mass[$numm] = $_POST[$txt];
+			$txt = 'kolli4estvo-'.$d;
+			$numm = $d.'-4';
+			$mass[$numm] = $_POST[$txt];
+			$txt = 'cena-'.$d;
+			$numm = $d.'-5';
+			$mass[$numm] = $_POST[$txt];
+			$txt = 'bez_NDS-'.$d;
+			$numm = $d.'-6';
+			$mass[$numm] = $_POST[$txt];
+			$txt = 's_NDS-'.$d;
+			$numm = $d.'-7';
+			$mass[$numm] = $_POST[$txt];
 		}
+	return $mass;
 	}
-	massiv();
+	$mass = massiv($data);
 	
 	/*
 	$record = array(
@@ -341,7 +358,7 @@ function generate_nakl_torg12()
 		$y2 = $pdf->GetY();
 		$h=$y2-$y1;
 		$pdf->SetXY(8,$y1);
-		$pdf->Cell(9, $h, $d,1,2,'R');
+		$pdf->Cell(9, $h, $d,1,2,'C');
 		$pdf->SetXY(101,$y1);
 		$pdf->Cell(9, $h, '',1,2,'C');
 		$pdf->SetXY(110,$y1);
@@ -369,10 +386,10 @@ function generate_nakl_torg12()
 		$pdf->Cell(20, $h, $mass[$txt],1,2,'R');
 		$pdf->SetXY(235,$y1);
 		$txt = "---";
-		$pdf->Cell(6, $h, $mass[$txt],1,2,'R');
+		$pdf->Cell(6, $h, $txt,1,2,'R');
 		$pdf->SetXY(241,$y1);
 		$txt = "0.00";
-		$pdf->Cell(20, $h, $mass[$txt],1,2,'R');
+		$pdf->Cell(20, $h, $txt,1,2,'R');
 		$pdf->SetXY(261,$y1);
 		$txt = $d."-7";
 		$pdf->Cell(24, $h, $mass[$txt],1,2,'R');
@@ -388,7 +405,7 @@ function generate_nakl_torg12()
 		$y2 = 8;
 	}
 	$sum = 0;
-	for($i = 0; $i <= $n; ++$i) {
+	for($i = 0; $i <= $data; ++$i) {
 		$txt = $i."-4";
 		$sum =$sum + $mass[$txt];
 	}
@@ -398,7 +415,7 @@ function generate_nakl_torg12()
 	$pdf->Cell(20, 5, 'X',1,2,'C');
 	$pdf->SetXY(215,$y2);
 	$sum = 0;
-	for($i = 0; $i <= $n; ++$i) {
+	for($i = 0; $i <= $data; ++$i) {
 		$txt = $i."-6";
 		$sum =$sum + $mass[$txt];
 	}
@@ -413,7 +430,7 @@ function generate_nakl_torg12()
 	$pdf->MultiCell(80, 0, 'Всего по накладной', 0, 'L');
 	$pdf->SetXY(261,$y2);
 	$sum = 0;
-	for($i = 0; $i <= $n; ++$i) {
+	for($i = 0; $i <= $data; ++$i) {
 		$txt = $i."-7";
 		$sum =$sum + $mass[$txt];
 	}
@@ -422,7 +439,7 @@ function generate_nakl_torg12()
 	
 	////
 	$summa = num2str($sum);
-	$summa2 = numstr($n);
+	$summa2 = numstr($data);
 	////
 	
 	$pdf->line(70, $y2+4.5, 285, $y2+4.5, $style);

@@ -167,6 +167,7 @@ textarea {
 	</tr>
 	</table>	
 	<input type="image" style="margin-left: 6.5%;" SRC="Untitled.png" name="okbutton">
+	<input type="hidden" id="strrr" name="kolli4estvo_strok" value="5">
 	</div>
 
 	<script type="text/javascript">
@@ -175,6 +176,7 @@ textarea {
 	function add_string() {
 		var qq=document.getElementById("tbl");
 		str = str + 1;
+		document.getElementById("strrr").value = str;
 		qq.innerHTML = dobavlenie();		
 	}
 	
@@ -213,6 +215,7 @@ textarea {
 		var qq=document.getElementById("tbl");
 		if (str > 1){
 		str = str - 1;
+		document.getElementById("strrr").value = str;
 		qq.innerHTML = udalenie();
 		}
 	}
